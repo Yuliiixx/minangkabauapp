@@ -8,6 +8,7 @@ import 'package:minangkabauapp/model/modelLogin.dart';
 import 'package:minangkabauapp/register.dart';
 import 'package:minangkabauapp/sessionManager.dart';
 
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -17,7 +18,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   var logger = Logger();
-  TextEditingController txtEmail = TextEditingController();
+  TextEditingController txtUsername = TextEditingController();
   TextEditingController txtPassword = TextEditingController();
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
@@ -29,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
         http.Response res = await http.post(Uri.parse('${ApiUrl().baseUrl}auth.php'),
             body: {
               "login": "1",
-              "email": txtEmail.text,
+              "username": txtUsername.text,
               "password": txtPassword.text,
             });
 
@@ -43,12 +44,14 @@ class _LoginPageState extends State<LoginPage> {
             sessionManager.saveSession(
               data.sukses,
               data.data.idUser,
+              data.data.username,
               data.data.namaUser,
-              data.data.email,
+              data.data.alamatUser,
+              data.data.nohpUser,
             );
             sessionManager.getSession();
             sessionManager.getSession().then((value) {
-              logger.d("nama :: ${sessionManager.namaUser}");
+              logger.d("nama :: ${sessionManager.userName}");
             });
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${data.pesan}')));
             Navigator.pushAndRemoveUntil(
@@ -90,15 +93,15 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
-                  controller: txtEmail,
+                  controller: txtUsername,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Email tidak boleh kosong';
+                      return 'Username tidak boleh kosong';
                     }
                     return null;
                   },
                   decoration: InputDecoration(
-                    labelText: 'Email',
+                    labelText: 'Username',
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -133,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () {
                           login();
                         },
-                        color: Colors.blue[900],
+                        color: Colors.green[900],
                         child: Text('Login', style: TextStyle(color: Colors.white)),
                       ),
               ),
@@ -148,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Text(
                   'Belum punya akun? Silahkan daftar',
                   style: TextStyle(
-                    color: Colors.blue[900],
+                    color: Colors.green[900],
                     decoration: TextDecoration.underline,
                   ),
                 ),

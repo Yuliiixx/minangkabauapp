@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minangkabauapp/login.dart';
+import 'package:minangkabauapp/home/home.dart';
 
 void main() {
   runApp(const MyApp());

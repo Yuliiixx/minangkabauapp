@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final modelLogin = modelLoginFromJson(jsonString);
+
 import 'dart:convert';
 
 ModelLogin modelLoginFromJson(String str) => ModelLogin.fromJson(json.decode(str));
@@ -24,7 +28,9 @@ class ModelLogin {
     data: json["data"] != null ? Data.fromJson(json["data"]) : Data(
       idUser: "",
       namaUser: "",
-      email: "",
+      alamatUser: "",
+      nohpUser: "",
+      username: "",
       password: "",
     ),
   );
@@ -40,27 +46,35 @@ class ModelLogin {
 class Data {
   String idUser;
   String namaUser;
-  String email;
+  String alamatUser;
+  String nohpUser;
+  String username;
   String password;
 
   Data({
     required this.idUser,
     required this.namaUser,
-    required this.email,
+    required this.alamatUser,
+    required this.nohpUser,
+    required this.username,
     required this.password,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     idUser: json["id_user"],
     namaUser: json["nama_user"],
-    email: json["email"],
+    alamatUser: json["alamat_user"],
+    nohpUser: json["nohp_user"],
+    username: json["username"],
     password: json["password"],
   );
 
   Map<String, dynamic> toJson() => {
     "id_user": idUser,
     "nama_user": namaUser,
-    "email": email,
+    "alamat_user": alamatUser,
+    "nohp_user": nohpUser,
+    "username": username,
     "password": password,
   };
 }

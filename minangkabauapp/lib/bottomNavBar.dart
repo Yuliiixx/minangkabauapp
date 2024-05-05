@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:minangkabauapp/home.dart';
-
+import 'package:minangkabauapp/category/category.dart';
+import 'package:minangkabauapp/home/home.dart';
+import 'package:minangkabauapp/pahlawan/pahlawan.dart';
+import 'package:minangkabauapp/profile/profile.dart';
 
 class BottomNavigation extends StatefulWidget {
   final String initialRoute;
@@ -13,7 +15,6 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-
   String initialRoute = "";
   int _selectedIndex = 0;
 
@@ -25,11 +26,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
     logger.d("Data dari push :: $initialRoute");
 
     // Pengecekan nilai initialRoute
-    if (initialRoute == "pegawai") {
+    if (initialRoute == "pahlawan") {
       setState(() {
         _selectedIndex = 2;
       });
-    }else if(initialRoute=="profil"){
+    } else if (initialRoute == "profil") {
       setState(() {
         _selectedIndex = 3;
       });
@@ -40,12 +41,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
     }
   }
 
-
   final List<Widget> _pages = [
     HomePage(),
-    // GaleriPage(),
-    // PegawaiPage(),
-    // Profil(),
+    PahlawanPage(),
+    CategoryPage(),
+    Profil(),
   ];
 
   void _onItemTapped(int index) {
@@ -61,28 +61,30 @@ class _BottomNavigationState extends State<BottomNavigation> {
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: _selectedIndex == 0 ? Colors.blue[900] : Colors.grey),
+            icon: Icon(Icons.home,
+                color: _selectedIndex == 0 ? Colors.green[900] : Colors.grey),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.photo_library, color: _selectedIndex == 1 ? Colors.blue[900] : Colors.grey),
-            label: 'Gallery',
+            icon: Icon(Icons.photo_library,
+                color: _selectedIndex == 1 ? Colors.green[900] : Colors.grey),
+            label: 'Pahlawan',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.people, color: _selectedIndex == 2 ? Colors.blue[900] : Colors.grey),
-            label: 'Employee',
+            icon: Icon(Icons.people,
+                color: _selectedIndex == 2 ? Colors.green[900]: Colors.grey),
+            label: 'Category',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person, color: _selectedIndex == 3 ? Colors.blue[900] : Colors.grey),
+            icon: Icon(Icons.person,
+                color: _selectedIndex == 3 ? Colors.green[900] : Colors.grey),
             label: 'Profile',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue[900],
+        selectedItemColor: Colors.green[900],
         onTap: _onItemTapped,
       ),
     );
   }
 }
-
-

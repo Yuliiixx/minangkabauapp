@@ -5,6 +5,7 @@ import 'package:minangkabauapp/apiUrl.dart';
 import 'package:minangkabauapp/login.dart';
 import 'package:minangkabauapp/model/modelBase.dart';
 
+
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
@@ -14,7 +15,9 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   TextEditingController txtNama = TextEditingController();
-  TextEditingController txtEmail = TextEditingController();
+  TextEditingController txtAlamat = TextEditingController();
+  TextEditingController txtNoTelpon = TextEditingController();
+  TextEditingController txtUsername = TextEditingController();
   TextEditingController txtPassword = TextEditingController();
   var logger = Logger();
   bool isLoading = false;
@@ -27,10 +30,11 @@ class _RegisterPageState extends State<RegisterPage> {
         http.Response res =
             await http.post(Uri.parse('${ApiUrl().baseUrl}auth.php'), body: {
           "tambah_user": "1",
-          "email": txtEmail.text,
+          "username": txtUsername.text,
           "password": txtPassword.text,
-          "nama_user": txtNama.text
-         
+          "nama_user": txtNama.text,
+          "alamat_user": txtAlamat.text,
+          "nohp_user": txtNoTelpon.text
         });
         ModelBase data = modelBaseFromJson(res.body);
         if (data.sukses) {
@@ -91,21 +95,54 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
               ),
-           
-              
               SizedBox(height: 20),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
-                  controller: txtEmail,
+                  controller: txtAlamat,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Email tidak boleh kosong';
+                      return 'Alamat tidak boleh kosong';
                     }
                     return null;
                   },
                   decoration: InputDecoration(
-                    labelText: 'Email',
+                    labelText: 'Alamat',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: TextFormField(
+                  controller: txtNoTelpon,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Nomor Telepon tidak boleh kosong';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Nomor Telepon',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.phone,
+                ),
+              ),
+              SizedBox(height: 20),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: TextFormField(
+                  controller: txtUsername,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Username tidak boleh kosong';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Username',
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -140,7 +177,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         onPressed: () {
                           register();
                         },
-                        color: Colors.blue[900],
+                        color: Colors.green[900],
                         child: Text('Register',
                             style: TextStyle(color: Colors.white)),
                       ),
@@ -158,7 +195,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Text(
                     'Sudah punya akun? Silahkan login',
                     style: TextStyle(
-                      color: Colors.blue[900],
+                      color: Colors.green[900],
                       decoration: TextDecoration.underline,
                     ),
                   ),
