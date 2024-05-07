@@ -64,6 +64,8 @@ class Datum {
 
   get namaPahlawan => null;
 
+  get fotoPahlawan => null;
+
   Map<String, dynamic> toJson() => {
    "id_pahlawan": idPahlawan,
         "nama": nama,

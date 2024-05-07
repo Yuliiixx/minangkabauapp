@@ -67,65 +67,180 @@ class _CategoryPageState extends State<CategoryPage>
                   tabs: [
                     Tab(
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset(
-                            'assets/images/categories/makanan.png', // Ubah path gambar sesuai dengan asset makanan
-                            width:
-                                24, // Sesuaikan ukuran gambar sesuai kebutuhan
-                            height: 24,
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/categories/makanan.png',
+                                  width: 24,
+                                  height: 24,
+                                ),
+                                SizedBox(height: 4),
+                                Text(
+                                  'Makanan',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
                           ),
-                          SizedBox(
-                              width: 8), // Berikan jarak antara gambar dan teks
-                          Text('Makanan'), // Ganti teks menjadi 'Makanan'
                         ],
                       ),
                     ),
                     Tab(
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset(
-                            'assets/images/categories/pakaian.png', // Ubah path gambar sesuai dengan asset pakaian
-                            width:
-                                24, // Sesuaikan ukuran gambar sesuai kebutuhan
-                            height: 24,
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/categories/pakaian.png',
+                                  width: 24,
+                                  height: 24,
+                                ),
+                                SizedBox(height: 1),
+                                Text(
+                                  'Pakaian',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
                           ),
-                          SizedBox(
-                              width: 8), // Berikan jarak antara gambar dan teks
-                          Text('Pakaian'), // Ganti teks menjadi 'Pakaian'
                         ],
                       ),
                     ),
                     Tab(
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset(
-                            'assets/images/categories/alat musik.png', // Ubah path gambar sesuai dengan asset alat musik
-                            width:
-                                24, // Sesuaikan ukuran gambar sesuai kebutuhan
-                            height: 24,
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/categories/alat musik.png',
+                                  width: 24,
+                                  height: 24,
+                                ),
+                                SizedBox(height: 1),
+                                Text(
+                                  'Alat Musik',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
                           ),
-                          SizedBox(
-                              width: 8), // Berikan jarak antara gambar dan teks
-                          Text('Alat Musik'), // Ganti teks menjadi 'Alat Musik'
                         ],
                       ),
                     ),
                     Tab(
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset(
-                            'assets/images/categories/culture.png', // Ubah path gambar sesuai dengan asset culture
-                            width:
-                                24, // Sesuaikan ukuran gambar sesuai kebutuhan
-                            height: 24,
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/categories/culture.png',
+                                  width: 24,
+                                  height: 24,
+                                ),
+                                SizedBox(height: 1),
+                                Text(
+                                  'Culture',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
                           ),
-                          SizedBox(
-                              width: 8), // Berikan jarak antara gambar dan teks
-                          Text('Culture'), // Ganti teks menjadi 'Culture'
                         ],
                       ),
                     ),
                   ],
+
+                  // tabs: [
+                  //   Tab(
+                  //     child: Row(
+                  //       children: [
+                  //         Image.asset(
+                  //           'assets/images/categories/makanan.png', // Ubah path gambar sesuai dengan asset makanan
+                  //           width:
+                  //               24, // Sesuaikan ukuran gambar sesuai kebutuhan
+                  //           height: 24,
+                  //         ),
+                  //         SizedBox(
+                  //             width: 8), // Berikan jarak antara gambar dan teks
+                  //         Text('Makanan'), // Ganti teks menjadi 'Makanan'
+                  //       ],
+                  //     ),
+                  //   ),
+                  //   Tab(
+                  //     child: Row(
+                  //       children: [
+                  //         Image.asset(
+                  //           'assets/images/categories/pakaian.png', // Ubah path gambar sesuai dengan asset pakaian
+                  //           width:
+                  //               24, // Sesuaikan ukuran gambar sesuai kebutuhan
+                  //           height: 24,
+                  //         ),
+                  //         SizedBox(
+                  //             width: 8), // Berikan jarak antara gambar dan teks
+                  //         Text('Pakaian'), // Ganti teks menjadi 'Pakaian'
+                  //       ],
+                  //     ),
+                  //   ),
+                  //   Tab(
+                  //     child: Row(
+                  //       children: [
+                  //         Image.asset(
+                  //           'assets/images/categories/alat musik.png', // Ubah path gambar sesuai dengan asset alat musik
+                  //           width:
+                  //               24, // Sesuaikan ukuran gambar sesuai kebutuhan
+                  //           height: 24,
+                  //         ),
+                  //         SizedBox(
+                  //             width: 8), // Berikan jarak antara gambar dan teks
+                  //         Text('Alat Musik'), // Ganti teks menjadi 'Alat Musik'
+                  //       ],
+                  //     ),
+                  //   ),
+                  //   Tab(
+                  //     child: Row(
+                  //       children: [
+                  //         Image.asset(
+                  //           'assets/images/categories/culture.png', // Ubah path gambar sesuai dengan asset culture
+                  //           width:
+                  //               24, // Sesuaikan ukuran gambar sesuai kebutuhan
+                  //           height: 24,
+                  //         ),
+                  //         SizedBox(
+                  //             width: 8), // Berikan jarak antara gambar dan teks
+                  //         Text('Culture'), // Ganti teks menjadi 'Culture'
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ],
                 ),
               ],
             ),

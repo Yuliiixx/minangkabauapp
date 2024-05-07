@@ -1,0 +1,408 @@
+
+import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
+import 'package:minangkabauapp/apiUrl.dart';
+import 'package:minangkabauapp/bottomNavBar.dart';
+import 'package:minangkabauapp/model/modelPahlawan.dart';
+
+
+class AddPahlawan extends StatefulWidget {
+  final Datum? data;
+
+  const AddPahlawan(this.data, {Key? key}) : super(key: key);
+
+  @override
+  State<AddPahlawan> createState() => _AddPahlawanState();
+}
+
+class _AddPahlawanState extends State<AddPahlawan> {
+  var logger = Logger();
+  final _formKey = GlobalKey<FormState>();
+  XFile? _image;
+  final ImagePicker _picker = ImagePicker();
+  File? uploadimage;
+  DateTime? _selectedDate= DateTime.now();
+  String? _selectedGender;
+
+  @override
+  void initState() {
+    super.initState();
+    // Jika data tidak null, isi _selectedDate dengan data.tanggalLahir
+    // dan _selectedGender dengan data.jeniskelamin
+    if (widget.data != null) {
+      _selectedDate = widget.data!.tanggalLahir;
+      _selectedGender = widget.data!.jenisKelamin;
+    }
+  }
+
+  TextEditingController _controllerNama = TextEditingController();
+  TextEditingController _controllerAsal = TextEditingController();
+  TextEditingController _controllerDeskripsi = TextEditingController();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+      });
+    }
+  }
+
+  Future<void> _getImage() async {
+    var choosedimage = await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      uploadimage = File(choosedimage!.path);
+    });
+  }
+
+  Future<void> _tambahDataPahlawan() async {
+    if (_formKey.currentState!.validate()) {
+      final String apiUrl = '${ApiUrl().baseUrl}pahlawan.php';
+
+      // Mengambil path file foto
+      String imagePath = _image != null ? _image!.path : '';
+
+      // Membuat request multipart
+      var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
+
+      List<int> imageBytes = uploadimage!.readAsBytesSync();
+      String baseImage = base64Encode(imageBytes);
+      // Menambahkan data teks
+      request.fields['action'] = 'tambah';
+      request.fields['nama_pahlawan'] = _controllerNama.text;
+      request.fields['foto_pahlawan'] = baseImage;
+      request.fields['tanggal_lahir'] =
+          _selectedDate.toString().substring(0, 10);
+      request.fields['asal'] = _controllerAsal.text;
+      request.fields['jenis_kelamin'] = _selectedGender.toString();
+      request.fields['deskripsi'] = _controllerDeskripsi.text;
+
+      // Menambahkan file foto
+      if (imagePath.isNotEmpty) {
+        request.files.add(
+            await http.MultipartFile.fromPath('foto_pahlawan', imagePath));
+      }
+
+      try {
+        var streamedResponse = await request.send();
+        var response = await http.Response.fromStream(streamedResponse);
+
+        if (response.statusCode == 200) {
+          // Jika berhasil, periksa respons JSON
+          Map<String, dynamic> jsonResponse = json.decode(response.body);
+          if (jsonResponse['sukses']) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Data pahlawan berhasil ditambahkan')),
+            );
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => BottomNavigation("pahlawan")),
+                (route) => false);
+          } else {
+            // Tampilkan pesan error dari server
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(jsonResponse['pesan'])),
+            );
+          }
+        } else {
+          // Tanggapan tidak berhasil, tampilkan kode status
+          throw Exception(
+              'Gagal menambahkan data pahlawan: ${response.statusCode}');
+        }
+      } catch (e) {
+        throw Exception('Gagal melakukan request: $e');
+      }
+    }
+  }
+
+  Future<void> _editDataPahlawan() async {
+    if (_formKey.currentState!.validate()) {
+      final String apiUrl = '${ApiUrl().baseUrl}pahlawan.php';
+
+
+      // Mengambil path file foto
+      String imagePath = _image != null ? _image!.path : '';
+
+      // Membuat request multipart
+      var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
+      //
+      String baseImage ="";
+      if(uploadimage!=null) {
+        List<int> imageBytes = uploadimage!.readAsBytesSync();
+        baseImage = base64Encode(imageBytes);
+        logger.d("::::${baseImage} ::::");
+      }
+
+      // Menambahkan data teks
+      request.fields['action'] = 'edit';
+      request.fields['id'] = widget.data!.idPahlawan!;
+      request.fields['nama_pahlawan'] = _controllerNama.text;
+      request.fields['foto_pahlawan'] = baseImage;
+      request.fields['tanggal_lahir'] =
+          _selectedDate.toString().substring(0, 10);
+      request.fields['asal'] = _controllerAsal.text;
+      request.fields['jenis_kelamin'] = _selectedGender.toString();
+      request.fields['deskripsi'] = _controllerDeskripsi.text;
+
+      // Menambahkan file foto
+      if (imagePath.isNotEmpty) {
+        request.files.add(
+            await http.MultipartFile.fromPath('foto_pahlawan', imagePath));
+      }
+
+      try {
+        var streamedResponse = await request.send();
+        var response = await http.Response.fromStream(streamedResponse);
+
+        if (response.statusCode == 200) {
+          // Jika berhasil, periksa respons JSON
+          Map<String, dynamic> jsonResponse = json.decode(response.body);
+          if (jsonResponse['sukses']) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Data pahlawan berhasil diperbarui')),
+            );
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => BottomNavigation("pahlawan")),
+                    (route) => false);
+          } else {
+            // Tampilkan pesan error dari server
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(jsonResponse['pesan'])),
+            );
+          }
+        } else {
+          // Tanggapan tidak berhasil, tampilkan kode status
+          throw Exception(
+              'Gagal memperbarui data pahlawan: ${response.statusCode}');
+        }
+      } catch (e) {
+        throw Exception('Gagal melakukan request: $e');
+      }
+    }
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    _controllerNama = widget.data != null
+        ? TextEditingController(text: widget.data!.namaPahlawan.toString())
+        : TextEditingController();
+    _controllerAsal = widget.data != null
+        ? TextEditingController(text: widget.data!.asal.toString())
+        : TextEditingController();
+    _controllerDeskripsi = widget.data != null
+        ? TextEditingController(text: widget.data!.deskripsi.toString())
+        : TextEditingController();
+        TextEditingController _controllerTanggalLahir = TextEditingController();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          widget.data==null?'Tambah Data Pahlawan':'Edit Data Pahlawan',
+          style: TextStyle(
+            color: Colors.white,
+          ), // Ubah warna teks menjadi putih
+        ),
+        backgroundColor: Colors.blue[900],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // TextFormField(
+              //   controller: _controllerNama,
+              //   decoration: InputDecoration(labelText: 'Nama Pahlawan'),
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty) {
+              //       return 'Nama pahlawan tidak boleh kosong';
+              //     }
+              //     return null;
+              //   },
+              // ),
+               TextFormField(
+                controller: _controllerNama,
+                decoration: InputDecoration(labelText: 'Nama Pahlawan'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Nama pahlawan tidak boleh kosong';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 12,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text("Foto Pahlawan"),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.grey,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10)))),
+                    onPressed: _getImage,
+                    child: Text('Pilih Gambar'),
+                  )
+                ],
+              ),
+              widget.data == null
+                  ? uploadimage == null
+                      ? Text(
+                          'Belum ada gambar dipilih',
+                          style: TextStyle(color: Colors.grey),
+                        )
+                      : Image.file(
+                          File(uploadimage!.path),
+                          height: 150,
+                        )
+                  : uploadimage == null
+                      ? Image.network(
+                          '${ApiUrl().baseUrl}${widget.data?.fotoPahlawan}',
+                          width: 200,
+                          height: 200,
+                          fit: BoxFit
+                              .cover, // Optional, untuk memastikan gambar terisi penuh dalam lingkaran
+                        )
+                      : Image.file(
+                          File(uploadimage!.path),
+                          height: 150,
+                        ),
+              SizedBox(height: 12.0),
+              // Row(
+              //   crossAxisAlignment: CrossAxisAlignment.center,
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: <Widget>[
+              //     Text("Tanggal Lahir Pahlawan"),
+              //     ElevatedButton(
+              //       style: ElevatedButton.styleFrom(
+              //           foregroundColor: Colors.white,
+              //           backgroundColor: Colors.grey,
+              //           shape: RoundedRectangleBorder(
+              //               borderRadius:
+              //                   BorderRadius.all(Radius.circular(10)))),
+              //       onPressed: () => _selectDate(context),
+              //       child: Text('Select Date'),
+              //     )
+              //   ],
+              // ),
+              TextFormField(
+                controller: _controllerTanggalLahir,
+                readOnly:
+                    true, // Tambahkan properti readOnly agar tidak dapat diedit secara manual
+                onTap: () async {
+                  // Tampilkan date picker saat user mengklik input field
+                  final DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate:
+                        DateTime.now(), // Tanggal awal yang ditampilkan
+                    firstDate:
+                        DateTime(1900), // Tanggal terawal yang dapat dipilih
+                    lastDate:
+                        DateTime.now(), // Tanggal terakhir yang dapat dipilih
+                  );
+                  if (pickedDate != null) {
+                    // Jika user memilih tanggal, perbarui nilai controller
+                    _controllerTanggalLahir.text =
+                        DateFormat('yyyy-MM-dd').format(pickedDate);
+                  }
+                },
+                decoration: InputDecoration(
+                  labelText: 'Tanggal Lahir',
+                  prefixIcon: Icon(Icons
+                      .calendar_today), // Tambahkan ikon kalender di bagian depan input field
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Tanggal lahir tidak boleh kosong';
+                  }
+                  return null;
+                },
+              ),
+              Text(_selectedDate.toString().substring(0,10)),
+              TextFormField(
+                controller: _controllerAsal,
+                decoration: InputDecoration(labelText: 'Asal'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Asal tidak boleh kosong';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 12.0),
+              Text(
+                'Pilih Jenis Kelamin:',
+              ),
+              DropdownButton<String>(
+                value: _selectedGender,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedGender = newValue;
+                  });
+                },
+                items: <String>['Laki-laki', 'Perempuan']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+              SizedBox(height: 12),
+              TextFormField(
+                controller: _controllerDeskripsi,
+                decoration: InputDecoration(labelText: 'Deskripsi'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Deskripsi tidak boleh kosong';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 15.0),
+              ElevatedButton(
+                onPressed: widget.data==null?_tambahDataPahlawan:_editDataPahlawan,
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.green[900],
+                ),
+                child: widget.data == null ? Text('Simpan') : Text('Update'),
+              ),
+            ],
+          ),
+        ),
+        ),
+      ),
+    );
+  }
+}

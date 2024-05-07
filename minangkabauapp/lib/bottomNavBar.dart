@@ -43,8 +43,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   final List<Widget> _pages = [
     HomePage(),
-    PahlawanPage(),
     CategoryPage(),
+    PahlawanPage(),    
     Profil(),
   ];
 
@@ -68,12 +68,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
           BottomNavigationBarItem(
             icon: Icon(Icons.photo_library,
                 color: _selectedIndex == 1 ? Colors.green[900] : Colors.grey),
-            label: 'Pahlawan',
+            label: 'Category',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.people,
                 color: _selectedIndex == 2 ? Colors.green[900]: Colors.grey),
-            label: 'Category',
+            label: 'Pahlawan',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person,

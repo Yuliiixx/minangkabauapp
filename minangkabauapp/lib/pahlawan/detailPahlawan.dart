@@ -41,10 +41,10 @@ class DetailPahlawan extends StatelessWidget {
         title: Text(
           data!.nama ?? 'Detail Pahlawan',
           style: TextStyle(
-            color: Colors.green[900],
+            color: Colors.white,
           ),
         ),
-        backgroundColor: Color(0xFFF5F9FF),
+        backgroundColor: Colors.green[900],
         actions: [
           IconButton(
             icon: Icon(Icons.edit),
@@ -82,7 +82,8 @@ class DetailPahlawan extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.network(
-                      '${ApiUrl().baseUrl}gambar/pahlawan/${data?.foto}',
+                      '${ApiUrl().baseUrl}${data?.foto}',
+                      // '${ApiUrl().baseUrl}gambar/pahlawan/${data?.foto}',
                       fit: BoxFit.fill,
                     ),
                   ),

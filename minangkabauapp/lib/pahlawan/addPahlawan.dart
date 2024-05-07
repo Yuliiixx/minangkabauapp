@@ -30,10 +30,11 @@ class _TambahDataPahlawanState extends State<TambahDataPahlawan> {
         title: Text(
           'Tambah Data Pahlawan',
           style: TextStyle(
-            backgroundColor: Colors.green[900],
+            color: Colors.white,
+            
           ),
         ),
-        backgroundColor: Color(0xFFF5F9FF),
+        backgroundColor: Colors.green[900],
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -44,122 +45,140 @@ class _TambahDataPahlawanState extends State<TambahDataPahlawan> {
       backgroundColor: Color(0xFFF5F9FF),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextFormField(
-                controller: _controllerNama,
-                decoration: InputDecoration(labelText: 'Nama Pahlawan'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Nama pahlawan tidak boleh kosong';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 12.0),
-              TextFormField(
-                controller: _controllerTanggalLahir,
-                readOnly:
-                    true, // Tambahkan properti readOnly agar tidak dapat diedit secara manual
-                onTap: () async {
-                  // Tampilkan date picker saat user mengklik input field
-                  final DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate:
-                        DateTime.now(), // Tanggal awal yang ditampilkan
-                    firstDate:
-                        DateTime(1900), // Tanggal terawal yang dapat dipilih
-                    lastDate:
-                        DateTime.now(), // Tanggal terakhir yang dapat dipilih
-                  );
-                  if (pickedDate != null) {
-                    // Jika user memilih tanggal, perbarui nilai controller
-                    _controllerTanggalLahir.text =
-                        DateFormat('yyyy-MM-dd').format(pickedDate);
-                  }
-                },
-                decoration: InputDecoration(
-                  labelText: 'Tanggal Lahir',
-                  prefixIcon: Icon(Icons
-                      .calendar_today), // Tambahkan ikon kalender di bagian depan input field
+        child: SingleChildScrollView( // Tambahkan SingleChildScrollView di sini
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextFormField(
+                  controller: _controllerNama,
+                  decoration: InputDecoration(labelText: 'Nama Pahlawan'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Nama pahlawan tidak boleh kosong';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Tanggal lahir tidak boleh kosong';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 12.0),
-              TextFormField(
-                controller: _controllerAsal,
-                decoration: InputDecoration(labelText: 'Asal'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Asal tidak boleh kosong';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 12.0),
-              DropdownButtonFormField<JenisKelamin>(
-                value: _selectedJenisKelamin,
-                onChanged: (JenisKelamin? value) {
-                  setState(() {
-                    _selectedJenisKelamin = value;
-                  });
-                },
-                items: JenisKelamin.values.map((JenisKelamin jenisKelamin) {
-                  return DropdownMenuItem<JenisKelamin>(
-                    value: jenisKelamin,
-                    child: Text(jenisKelamin.toString().split('.').last),
-                  );
-                }).toList(),
-                decoration: InputDecoration(labelText: 'Jenis Kelamin'),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Pilih jenis kelamin';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 12.0),
-              TextFormField(
-                controller: _controllerDeskripsi,
-                decoration: InputDecoration(labelText: 'Deskripsi'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Deskripsi tidak boleh kosong';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 12.0),
-              GestureDetector(
-                onTap: _getImage,
-                child: Row(
-                  children: [
-                    Icon(Icons.add_a_photo),
-                    SizedBox(width: 8), // Jarak antara ikon dan teks
-                    Text(_imageFile == null
-                        ? 'Pilih Gambar'
-                        : 'Ganti Gambar'), // Teks sesuai kondisi
-                  ],
+                SizedBox(height: 12.0),
+                TextFormField(
+                  controller: _controllerTanggalLahir,
+                  readOnly: true, 
+                  onTap: () async {
+                    final DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(), 
+                      firstDate: DateTime(1900), 
+                      lastDate: DateTime.now(), 
+                    );
+                    if (pickedDate != null) {
+                      _controllerTanggalLahir.text =
+                          DateFormat('yyyy-MM-dd').format(pickedDate);
+                    }
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Tanggal Lahir',
+                    prefixIcon: Icon(Icons.calendar_today),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Tanggal lahir tidak boleh kosong';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 12.0),
+                TextFormField(
+                  controller: _controllerAsal,
+                  decoration: InputDecoration(labelText: 'Asal'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Asal tidak boleh kosong';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 12.0),
+                DropdownButtonFormField<JenisKelamin>(
+                  value: _selectedJenisKelamin,
+                  onChanged: (JenisKelamin? value) {
+                    setState(() {
+                      _selectedJenisKelamin = value;
+                    });
+                  },
+                  items: JenisKelamin.values.map((JenisKelamin jenisKelamin) {
+                    return DropdownMenuItem<JenisKelamin>(
+                      value: jenisKelamin,
+                      child: Text(jenisKelamin.toString().split('.').last),
+                    );
+                  }).toList(),
+                  decoration: InputDecoration(labelText: 'Jenis Kelamin'),
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Pilih jenis kelamin';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 12.0),
+                TextFormField(
+                  controller: _controllerDeskripsi,
+                  decoration: InputDecoration(labelText: 'Deskripsi'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Deskripsi tidak boleh kosong';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 12.0),
+                // GestureDetector(
+                //   onTap: _getImage,
+                //   child: Row(
+                //     children: [
+                //       Icon(Icons.add_a_photo),
+                //       SizedBox(width: 8), 
+                //       Text(_imageFile == null
+                //           ? 'Pilih Gambar'
+                //           : 'Ganti Gambar'),
+                //     ],
+                //   ),
+                // ),
+                GestureDetector(
+  onTap: _getImage,
+  child: Row(
+    children: [
+      Icon(Icons.add_a_photo),
+      SizedBox(width: 8), 
+      _imageFile == null
+          ? Text('Pilih Gambar')
+          : Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.file(
+                  _imageFile!,
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
                 ),
               ),
-              SizedBox(height: 5.0),
-              ElevatedButton(
-                onPressed: _tambahDataPahlawan,
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.green[900],
+            ),
+    ],
+  ),
+),
+
+                SizedBox(height: 15.0),
+                ElevatedButton(
+                  onPressed: _tambahDataPahlawan,
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.green[900],
+                  ),
+                  child: Text('Simpan'),
                 ),
-                child: Text('Simpan'),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -170,10 +189,8 @@ class _TambahDataPahlawanState extends State<TambahDataPahlawan> {
     if (_formKey.currentState!.validate()) {
       final String apiUrl = '${ApiUrl().baseUrl}pahlawan.php';
 
-      // Convert jenis kelamin enum to string
       String jenisKelamin = _selectedJenisKelamin.toString().split('.').last;
 
-      // Prepare the request body
       Map<String, dynamic> requestBody = {
         'action': "tambah",
         'nama': _controllerNama.text,
@@ -183,14 +200,12 @@ class _TambahDataPahlawanState extends State<TambahDataPahlawan> {
         'deskripsi': _controllerDeskripsi.text,
       };
 
-      // If an image file is selected, encode it to base64 and include it in the request body
       if (_imageFile != null) {
         List<int> imageBytes = await _imageFile!.readAsBytes();
         String base64Image = base64Encode(imageBytes);
         requestBody['foto'] = base64Image;
       }
 
-      // Send the POST request
       final response = await http.post(Uri.parse(apiUrl), body: requestBody);
 
       if (response.statusCode == 200) {
@@ -233,4 +248,4 @@ class _TambahDataPahlawanState extends State<TambahDataPahlawan> {
   }
 }
 
-enum JenisKelamin { perempuan, lakiLaki }
+enum JenisKelamin {  Perempuan, Lakilaki }

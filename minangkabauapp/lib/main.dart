@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minangkabauapp/login.dart';
+import 'package:minangkabauapp/splashscreen.dart';
 import 'package:minangkabauapp/home/home.dart';
 
 void main() {
@@ -7,7 +8,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
   // This widget is the root of your application.
   @override
@@ -15,12 +16,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LoginPage(),
+      home: SplashScreen(),
+      debugShowCheckedModeBanner: false, // Hide debug banner for the root MaterialApp
     );
   }
 }
-

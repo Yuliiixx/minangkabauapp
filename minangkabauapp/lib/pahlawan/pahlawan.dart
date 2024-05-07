@@ -56,8 +56,15 @@ class _PahlawanPageState extends State<PahlawanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: AppBar(
-        title: Text('Pahlawan Indonesia'),
+      appBar: AppBar(
+        title: Text(
+          'Pahlawan Indonesia',
+          style: TextStyle(
+            fontFamily: 'Jost',
+            fontSize: 21,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         backgroundColor: Color(0xFFF5F9FF),
       ),
       backgroundColor: Color(0xFFF5F9FF),
@@ -65,16 +72,30 @@ class _PahlawanPageState extends State<PahlawanPage> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            TextField(
-              controller: searchController,
-              onChanged: filterPahlawanList,
-              decoration: InputDecoration(
-                labelText: 'Search Pahlawan',
-                prefixIcon: Icon(Icons.search),
-                filled:
-                    true, // Tambahkan properti filled dan atur nilainya menjadi true
-                fillColor:
-                    Colors.white, // Atur warna latar belakang menjadi putih
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: TextField(
+                controller: searchController,
+                onChanged: filterPahlawanList,
+                decoration: InputDecoration(
+                  hintText: 'Cari pahlawan...',
+                  prefixIcon: Icon(Icons.search),
+                  suffixIcon: searchController.text.isNotEmpty
+                      ? IconButton(
+                          icon: Icon(Icons.clear),
+                          onPressed: () {
+                            searchController.clear();
+                            filterPahlawanList('');
+                          },
+                        )
+                      : null,
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
               ),
             ),
             Expanded(
@@ -94,7 +115,7 @@ class _PahlawanPageState extends State<PahlawanPage> {
                         );
                       },
                       child: Card(
-                        color: Colors.white, // Latar belakang putih
+                        color: Colors.white,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -103,10 +124,10 @@ class _PahlawanPageState extends State<PahlawanPage> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: Image.network(
-                                  '${ApiUrl().baseUrl}gambar/pahlawan/${data?.foto}',
+                                  '${ApiUrl().baseUrl}${data?.foto}',
                                   width: 150,
                                   height: 100,
-                                  fit: BoxFit.fill,
+                                  fit: BoxFit.cover, // Penyesuaian gambar agar tidak terlihat gepeng
                                 ),
                               ),
                             ),
@@ -126,8 +147,7 @@ class _PahlawanPageState extends State<PahlawanPage> {
                                       ),
                                     ),
                                     SizedBox(
-                                        height:
-                                            4), // Jarak antara judul dan deskripsi
+                                        height: 4),
                                     Text(
                                       "${data.deskripsi}",
                                       maxLines: 2,
@@ -161,7 +181,7 @@ class _PahlawanPageState extends State<PahlawanPage> {
         },
         child: Icon(
           Icons.add,
-          color: Colors.white, // Mengatur warna ikon menjadi putih
+          color: Colors.white,
         ),
         backgroundColor: Colors.green[900],
       ),

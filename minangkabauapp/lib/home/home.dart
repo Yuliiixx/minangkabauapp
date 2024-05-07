@@ -68,7 +68,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Page'),
+        title: Text(
+          'Home Page',
+          style: TextStyle(
+            fontFamily: 'Jost',
+            fontSize: 21,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         backgroundColor: Color(0xFFF5F9FF),
       ),
       backgroundColor: Color(0xFFF5F9FF),
@@ -80,11 +87,12 @@ class _HomePageState extends State<HomePage> {
             children: [
               Align(
                 alignment: Alignment.topLeft,
-                child: Text(
+                child: Text("Hi, "
                   '${sessionManager.fullname}',
                   style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+            fontWeight: FontWeight.w600,
+                    color: Colors.grey[900],
                   ),
                 ),
               ),
@@ -92,7 +100,7 @@ class _HomePageState extends State<HomePage> {
               Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  "What Would you like to learn Today? \nSearch Below.",
+                  "Welcome to Indonesian Culture!",
                   style: TextStyle(color: Colors.grey[500]),
                 ),
               ),
@@ -167,61 +175,64 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               );
                             },
-                           child: Card(
-  color: Colors.white, // Tambahkan ini untuk latar belakang putih
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(
-        padding: EdgeInsets.all(8),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                '${ApiUrl().baseUrl}gambar/berita/${dataItem?.gambarBerita}',
-                width: 150,
-                height: 100,
-                fit: BoxFit.fill,
-              ),
-            ),
-            SizedBox(
-              width: 10,
-            ), // Jarak antara gambar dan teks
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "${dataItem?.judulBerita}",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ), // Jarak antara judul dan subtitle
-                  Text(
-                    "${dataItem?.kontenBerita}",
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.black54,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    ],
-  ),
-),
-
+                            child: Card(
+                              color: Colors
+                                  .white, // Tambahkan ini untuk latar belakang putih
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(8),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: Image.network(
+                                            '${ApiUrl().baseUrl}gambar/berita/${dataItem?.gambarBerita}',
+                                            width: 150,
+                                            height: 100,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ), // Jarak antara gambar dan teks
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "${dataItem?.judulBerita}",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ), // Jarak antara judul dan subtitle
+                                              Text(
+                                                "${dataItem?.kontenBerita}",
+                                                maxLines: 3,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black54,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         );
                       },

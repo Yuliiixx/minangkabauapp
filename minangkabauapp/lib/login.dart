@@ -84,8 +84,9 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             children: [
               SizedBox(height: 50),
+              
               Image.asset(
-                'images/logo.png', // Ganti dengan path gambar logo Anda
+                "assets/images/logo.png", // Ganti dengan path gambar logo Anda
                 height: 150,
                 width: 150,
               ),
