@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 import 'package:minangkabauapp/apiUrl.dart';
 import 'package:minangkabauapp/bottomNavBar.dart';
 import 'package:minangkabauapp/model/modelLogin.dart';
 import 'package:minangkabauapp/register.dart';
 import 'package:minangkabauapp/sessionManager.dart';
-
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -49,10 +47,7 @@ class _LoginPageState extends State<LoginPage> {
               data.data.alamatUser,
               data.data.nohpUser,
             );
-            sessionManager.getSession();
-            sessionManager.getSession().then((value) {
-              logger.d("nama :: ${sessionManager.userName}");
-            });
+
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${data.pesan}')));
             Navigator.pushAndRemoveUntil(
               context,

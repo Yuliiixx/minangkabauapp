@@ -85,6 +85,7 @@ class _EditPahlawanState extends State<EditPahlawan> {
       setState(() {
         if (pickedFile != null) {
           _imageFile = File(pickedFile.path);
+          print("pickedFile : $pickedFile");
         }
       });
     } catch (e) {

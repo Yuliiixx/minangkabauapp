@@ -26,7 +26,8 @@ class _Profil extends State<Profil> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    sessionManager.getSession();
+    
+    // sessionManager.getSession();
     sessionManager.getSession().then((value) {
       logger.d("alamat :: ${sessionManager.alamat}");
       nama = sessionManager.fullname;
@@ -109,6 +110,7 @@ class _Profil extends State<Profil> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => EditUser()));
                 },
+                
                 color: Colors.green[900],
                 child: Text(
                   'Edit Profil',

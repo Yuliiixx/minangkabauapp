@@ -34,7 +34,12 @@ class SessionManager{
     pref.clear();
   }
 
+  // Metode untuk mendapatkan nama lengkap pengguna dari sesi
+  String? getNama_user() {
+    return fullname;
+  }
 }
+
 
 //instance class biar d panggil
 SessionManager sessionManager = SessionManager();

@@ -20,12 +20,20 @@ class _HomePageState extends State<HomePage> {
   late TextEditingController _searchController;
   late Future<List<Datum>?> _futureBerita;
   List<Datum>? _searchResult;
+  late String fullname; // Variabel untuk menyimpan nama pengguna
 
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController();
     _futureBerita = getBerita();
+    sessionManager.getSession().then((_) {
+      setState(() {
+        // Mendapatkan nama pengguna dari sesi
+        // sessionManager.getSession(); 
+         fullname = sessionManager.getNama_user() ?? '';
+      });
+    });
     _searchController.addListener(() {
       searchBerita(_searchController.text);
     });
@@ -87,11 +95,11 @@ class _HomePageState extends State<HomePage> {
             children: [
               Align(
                 alignment: Alignment.topLeft,
-                child: Text("Hi, "
-                  '${sessionManager.fullname}',
+                child: Text(
+                  "Hi, $fullname", // Menampilkan nama pengguna
                   style: TextStyle(
                     fontSize: 16,
-            fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w600,
                     color: Colors.grey[900],
                   ),
                 ),

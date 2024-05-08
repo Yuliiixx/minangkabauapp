@@ -26,7 +26,7 @@ class _EditUser extends State<EditUser> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    sessionManager.getSession();
+    // sessionManager.getSession();
     sessionManager.getSession().then((value) {
       // logger.d("alamat :: ${sessionManager.alamat}");
       // nama = sessionManager.fullname;
@@ -64,6 +64,7 @@ class _EditUser extends State<EditUser> {
             txtAlamat.text,
             txtNoTelpon.text
         );
+        sessionManager.getSession();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(data.pesan)));
         Navigator.pushAndRemoveUntil(
             context,
@@ -160,16 +161,32 @@ class _EditUser extends State<EditUser> {
               ),
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Tambahkan logika untuk pendaftaran di sini
-                register();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green[900], // Ubah warna tombol di sini
+            SizedBox(height: 20),
+              Center(
+                child: isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : MaterialButton(
+                        minWidth: 150,
+                        height: 45,
+                        onPressed: () {
+                          register();
+                        },
+                        color: Colors.green[900],
+                        child: Text('Simpan Perubahan', style: TextStyle(color: Colors.white)),
+                      ),
               ),
-              child: Text('Edit', style: TextStyle(color: Colors.white)),
-            ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     // Tambahkan logika untuk pendaftaran di sini
+            //     register();
+            //   },
+            //   style: ElevatedButton.styleFrom(
+            //     backgroundColor: Colors.green[900], // Ubah warna tombol di sini
+            //   ),
+            //   child: Text('Edit', style: TextStyle(color: Colors.white)),
+            // ),
           ],
         ),
       ),
